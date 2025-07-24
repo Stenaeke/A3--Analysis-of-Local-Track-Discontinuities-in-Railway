@@ -61,20 +61,14 @@ normalized_data = scaler.fit_transform(df_combined_trails)
 normalized_data['event'] = df_event_column.values
 
 #%%
-row_norms = np.linalg.norm(normalized_data.drop('event', axis=1), axis=1)
-print(row_norms.min(), row_norms.max())
-
-print(normalized_data.drop('event', axis=1).mean())
-print(normalized_data.drop('event', axis=1).std())
-
-
-#%%
+# Split the data into training and testing sets in an 80/20 ratio.
 trails_train, trails_test = train_test_split(normalized_data,test_size=0.20)
 
 print(f"Train:\n{trails_train.shape}")
 print(f"Test:\n{trails_test.shape}")
 
 #%%
+#Cross-Validation:
 model = svm.SVC(kernel='linear')
 X_train = trails_train.drop('event', axis=1)
 y_train = trails_train['event'].values.astype(int)
@@ -86,7 +80,7 @@ print("Standard deviation of cross-validation scores:", scores.std())
 
 
 #%%
-
+#Comparison task:
 model.fit(X_train, y_train)
 
 X_test = trails_test.drop('event', axis=1)
